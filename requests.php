@@ -4,7 +4,7 @@
  * @var integer
  */
 const URIMAXLENGTH = 1900;
-
+const APIKey = '81fd53734c494d1994bc1236585320c5';
 /**
  * Calls the given url with the query params and API in the header, responds with ann array of results.
  *
@@ -13,6 +13,17 @@ const URIMAXLENGTH = 1900;
  * @param  array $queryParams  Associative array of query strings, with field value pairs.
  * @return json                json encoded array of results
  */
+ 
+require_once 'include/config.php';
+$url = "https://api.at.govt.nz/v2/gtfs/routes[?callback]";
+$params = callback;
+$results = apiCall($APIKey, $url, $params);
+// Tell the browser we are sending back json
+header('Content-Type: application/json');
+print $results[0];
+
+ 
+ 
 function apiCall($APIKey, $url, $queryParams)
 {
     $queries = array();
