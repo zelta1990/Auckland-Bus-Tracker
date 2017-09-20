@@ -15,17 +15,19 @@ if ($conn->connect_error) {
 
 $sql = "SELECT * FROM routes";
 $result = $conn->query($sql);
-
 echo '<select name="DROP DOWN ROUTE">'; //opens drop down box
-if ($result->num_rows > 0) {
+$query = "SELECT distinct route_short_name FROM `akl_transport`.`routes`";
+if ($result=$conn->query($query)) {
     // output data of each row
+    
+    
     while($row = $result->fetch_assoc()) {
     echo '<option value="'.$row['route_short_name'].'">'.$row['route_short_name'].'</option>';
 }
           
 } else {
     echo "0 results";
-}
-echo '</select>'; //closes the drop doqn box
+}	
+	echo '</select>'; //closes the drop doqn box
 $conn->close();
 ?>
