@@ -1,3 +1,4 @@
+
 <?php //config.php
 $hostname = "csse-info263.canterbury.ac.nz";
 $database = "akl_transport";
@@ -19,10 +20,9 @@ echo '<select name="DROP DOWN ROUTE">'; //opens drop down box
 if ($result->num_rows > 0) {
     // output data of each row
     while($row = $result->fetch_assoc()) {
-    echo '<option value="'.$row['route_long_name'].'">'.$row['route_long_name'].'</option>';
+    echo '<option value="'.$row['route_short_name'].'">'.$row['route_short_name'].'</option>';
 }
-
-    
+          
 } else {
     echo "0 results";
 }
