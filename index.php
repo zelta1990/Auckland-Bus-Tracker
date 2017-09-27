@@ -5,12 +5,7 @@ require_once 'include/header.php';
 require_once 'include/config.php';
 require_once 'requests.php';
 
-    $url = "https://api.at.govt.nz/v2/gtfs/routes";
-$params = array();
-$results = apiCall($APIKey, $url, $params);
-// Tell the browser we are sending back json
-header('Content-Type: application/json');
-print $results[0];
+
 ?>
 
 
