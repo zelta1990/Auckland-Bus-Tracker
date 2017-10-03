@@ -1,0 +1,43 @@
+<?php //database.php
+require_once 'include/config.php';
+require_once 'requests.php';
+$url = "https://api.at.govt.nz/v2/public/realtime/vehiclelocations[&tripid]";
+$APIKey = '81fd53734c494d1994bc1236585320c5';
+$routename = $_GET['q'];
+$conn = new mysqli($hostname, $username, $password, $database);
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+function getActiveVehicles($conn,$routename){
+    $params = array();
+    $query = 'SELECT trip_id from `akl_transport`.`trips` WHERE route_id = ANY(SELECT route_id FROM `akl_transport`.`routes` WHERE route_short_name = $routename)';
+    if ($result=$conn->query($query)) {
+        if(!$result){
+            die($conn->error);
+        }
+        while($row = $result->fetch_assoc()) {
+            array_push($params, $row);
+        }    
+        $result->close();
+        $conn->close();
+    } 	
+   // $url = "https://api.at.govt.nz/v2/public/realtime";
+    $url ="https://api.at.govt.nz/v2/public/realtime/vehiclelocations";
+  //  $url = "https://api.at.govt.nz/v2/public/realtime/vehiclelocations[&tripid]";
+    $APIKey = '81fd53734c494d1994bc1236585320c5';
+
+    $results = apiCall($APIKey, $url,$params);
+    header("Content-type: text/xml");
+  //  header('Content-Type: application/json');
+    return $results;
+}
+$results = getActiveVehicles($conn,$routename);
+for($i=0;$i<count($results);$i++){
+    print $results[$i];
+}
+//echo json_encode($results);
+
+
+?>
