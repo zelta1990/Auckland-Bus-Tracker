@@ -13,7 +13,6 @@ const APIKey = '81fd53734c494d1994bc1236585320c5';
  * @param  array $queryParams  Associative array of query strings, with field value pairs.
  * @return json                json encoded array of results
  */
-
  
  
 function apiCall($APIKey, $url, $queryParams)
@@ -43,19 +42,15 @@ function apiCall($APIKey, $url, $queryParams)
                 }
                 $queryParamString .= $value . ",";
             }
-
             // Add the last uri to batch
             $queryParamString = rtrim($queryParamString, ",");
             $queries[] = $start_query . "?" . $queryParamString;
         }
     }
-
     $getter = new ParallelGet($queries, $APIKey);
     $getter->execute();
     return $getter->getResults();
 }
-
-
 /**
  * Performs parallel get requests using CURL
  */
@@ -64,7 +59,6 @@ class ParallelGet
     private $mh;
     private $urls;
     private $ch;
-
     /**
      * Creates an instance of ParallelGet.
      * @param array $urls   Array of URLs to execute.
@@ -81,7 +75,6 @@ class ParallelGet
         $request_headers[] = "accept-language: en-US,en;q=0.8";
         $request_headers[] = "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36";
         $request_headers[] = "Ocp-Apim-Subscription-Key: ". $APIKey;
-
         foreach($urls as $i => $url)
         {
             $this->ch[$i] = curl_init($url);
@@ -90,7 +83,6 @@ class ParallelGet
             curl_setopt($this->ch[$i], CURLOPT_CAINFO, getcwd() . '\certs\ca-bundle.crt');
             curl_setopt($this->ch[$i], CURLOPT_ENCODING , "gzip");
             curl_multi_add_handle($this->mh, $this->ch[$i]);
-
         }
     }
     /**
@@ -102,7 +94,6 @@ class ParallelGet
         do {
             $execReturnValue = curl_multi_exec($this->mh, $runningHandles);
         } while ($execReturnValue == CURLM_CALL_MULTI_PERFORM);
-
         // Loop and continue processing the request
         while ($runningHandles && $execReturnValue == CURLM_OK)
         {
@@ -110,19 +101,16 @@ class ParallelGet
             {
                 usleep(100);
             }
-
             do {
                 $execReturnValue = curl_multi_exec($this->mh, $runningHandles);
             } while ($execReturnValue == CURLM_CALL_MULTI_PERFORM);
         }
-
         // Check for any errors
         if ($execReturnValue != CURLM_OK)
         {
             trigger_error("Curl multi read error $execReturnValue\n", E_USER_WARNING);
         }
     }
-
     /**
      * Gets results from executed URLs.
      * @return array Array of results from URLs.
@@ -134,7 +122,6 @@ class ParallelGet
         {
             // Check for errors
             $curlError = curl_error($this->ch[$i]);
-
             if ($curlError == "")
             {
                 $responseContent = curl_multi_getcontent($this->ch[$i]);
@@ -148,7 +135,6 @@ class ParallelGet
             curl_multi_remove_handle($this->mh, $this->ch[$i]);
             curl_close($this->ch[$i]);
         }
-
         // Clean up the curl_multi handle
         curl_multi_close($this->mh);
         // return the response data
@@ -156,4 +142,3 @@ class ParallelGet
     }
 }
  ?>
-
