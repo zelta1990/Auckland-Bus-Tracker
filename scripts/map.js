@@ -1,6 +1,7 @@
+var map;
 function initMap() {
         var auckland = {lat: -36.8485, lng: 174.7633};
-        var map = new google.maps.Map(document.getElementById('map'), {
+         map = new google.maps.Map(document.getElementById('map'), {
           zoom: 13,
           center: auckland
         });
@@ -8,72 +9,43 @@ function initMap() {
           position: auckland,
           map: map
         });
-}/*        var customLable = {
-            vehicle:{
-              label: 'V'
+}
+
+
+function setMarkers(data){
+        var customLabel = {
+            bus: {
+              label: 'B'
             }
         };
-
-        var infoWindow = new google.maps.InfoWindow;
-
-        downloadUrl('getTrip.php', function(data){
-           var xml = data.responseXML;
-           var markers = xml.documentElement.getElementsByTagName('vehicle');
-           Array.prototype.forEach.call(markers, function(markerElem) {
-              var id = markerElem.getAttribute('id');
-              var route_id = markerElem.getAttribute('route_id');
-              var point = new google.maps.LatLng(
-                  parseFloat(markerElem.getAttribute('latitude')),
-                  parseFloat(markerElem.getAttribute('longitude')));
-
-              var infowincontent = document.createElement('div');
-              var strong = document.createElement('strong');
-              strong.textContent = id;
-              infowincontent.appendChild(strong);
-              infowincontent.appendChild(document.createElement('br'));
-
-              var text = document.createElement('text');
-              text.textContent = route_id;
-              infowincontent.appendChild(text);
-              var icon = customLabel[type] || {};
-              var marker = new google.maps.Marker({
-                map: map,
-                position: point,
-                label: icon.label
-              });
-              marker.addListener('click', function() {
-                infoWindow.setContent(infowincontent);
-                infoWindow.open(map, marker);
-              });
-            });
-          });
-        }
-
-
+        var infowincontent = document.createElement('div');
+        var strong = document.createElement('strong');
+        strong.textContent ="Bus id: ".concat(data.vehicle.id);
+        infowincontent.appendChild(strong);
+        infowincontent.appendChild(document.createElement('br'));
+        
+        var text = document.createElement('text');
+        text.textContent = "start time: ".concat(data.trip.start_time);
+        infowincontent.appendChild(text);
+        var infoWindow = new google.maps.InfoWindow();
+        
+        var lat1 = data.position.latitude;
+        alert(lat1);
+        var lon1 = data.position.longitude;
+        var point = new google.maps.LatLng(lat1, lon1);
+        var vid = data.vehicle.id;
+        var icon = customLabel['bus'] || {};
+        var marker = new google.maps.Marker({
+           position: point,          
+           map:map,
+           label: icon.label     
+           }); 
+        marker.addListener('click', function() {
+        infoWindow.setContent(infowincontent);
+        infoWindow.open(map, marker);
+        });
+      //  alert('set marker');
+      //  marker.setMap(map);
+    //    alert('hsda');
+    
 }
-
-function setMarker(newlat,newlon){
-    var location = {lat:newlat, lon:newlon};
-    var marker = new google.maps.Marker({
-        position: location,
-        map: map
-       });
-}
-
-function downloadUrl(url, callback) {
-    var request = window.ActiveXObject ?
-        new ActiveXObject('Microsoft.XMLHTTP') :
-        new XMLHttpRequest;
-
-        request.onreadystatechange = function() {
-          if (request.readyState == 4) {
-            request.onreadystatechange = doNothing;
-            callback(request, request.status);
-          }
-        };
-
-        request.open('GET', url, true);
-        request.send(null);
-      }
-
-function doNothing() {}*/
