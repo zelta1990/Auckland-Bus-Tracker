@@ -1,8 +1,6 @@
 <?php //database.php
 require_once 'include/config.php';
 require_once 'requests.php';
-$url = "https://api.at.govt.nz/v2/public/realtime/vehiclelocations[&tripid]";
-$APIKey = '81fd53734c494d1994bc1236585320c5';
 $routename = $_GET['q'];
 $conn = new mysqli($hostname, $username, $password, $database);
 // Check connection
@@ -29,11 +27,10 @@ function getActiveVehicles($conn,$routename){
 
     $querystring = array("tripid" => $params);
 
-    $results = apiCall($APIKey, $url,$querystring);
-    
-    
+    $results = apiCall($APIKey, $url,$querystring);   
     header('Content-Type: application/json');
     return $results;
+    
 }
 $result = getActiveVehicles($conn,$routename);
 print $result[0];
