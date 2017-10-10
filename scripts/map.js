@@ -32,7 +32,7 @@ function setMarkers(data){
     var bounds = new google.maps.LatLngBounds();
    // var origin = new google.maps.LatLng( -36.8485, 174.7633);          
    // bounds.extend(origin);
-    alert("Number of buses of this route: ".concat(data.length));
+ //   alert("Number of buses of this route: ".concat(data.length));
      for(var i = 0;i<data.length;i++){
        (function(index){                  //refer to Matej P 's answer to https://stackoverflow.com/questions/37409872/google-map-info-window-is-only-showing-on-one-marker-in-javascript
         var lat1 = data[index].vehicle.position.latitude;
