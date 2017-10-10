@@ -32,7 +32,6 @@ var nIntervalId;
 
 function showVehicles(str) {
    //lert("You selected Route "+str);
-  clearInterval(nIntervalId);
     if (str == "") {
         document.getElementById("map").innerHTML = "";
         return;
@@ -59,8 +58,10 @@ function showVehicles(str) {
 }
 
 function refreshMarkerLocations(str){    //reload markers location every 30 seconds
+  clearInterval(nIntervalId);
+
    showVehicles(str);
-   nIntervalId = setInterval(showVehicles,10000,str);
+   nIntervalId = setInterval(showVehicles,30000,str)
 }
 
 
