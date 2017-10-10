@@ -10,7 +10,7 @@ if ($conn->connect_error) {
 } 
 $sql = "SELECT * FROM routes";
 $result = $conn->query($sql);
-echo '<select id="DROP DOWN ROUTE", onchange = "showVehicles(this.value)">'; //opens drop down box
+echo '<select id="DROP DOWN ROUTE", onchange = "refreshMarkerLocations(this.value)">'; //opens drop down box
 $query = "SELECT distinct route_short_name FROM `akl_transport`.`routes`";
 if ($result=$conn->query($query)) {
     echo '<option value="Select a route">Select a route</option>';
@@ -28,8 +28,11 @@ $conn->close();
 
 <script src="scripts/map.js"></script>
 <script>
+var nIntervalId;
+
 function showVehicles(str) {
-   // alert("You selected Route "+str);
+   //lert("You selected Route "+str);
+  clearInterval(nIntervalId);
     if (str == "") {
         document.getElementById("map").innerHTML = "";
         return;
@@ -55,10 +58,15 @@ function showVehicles(str) {
     }
 }
 
+function refreshMarkerLocations(str){    //reload markers location every 30 seconds
+   showVehicles(str);
+   nIntervalId = setInterval(showVehicles,10000,str);
+}
+
 
 </script>
 
-<div id="map"></div>
+
 
 <script async defer
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyWgwz17ZqlktEYZ9P8SvdxGDFghGDx8k&callback=initMap">
