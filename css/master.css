@@ -2,15 +2,22 @@ html {
   position: relative;
   min-height: 100%;
 }
+
 body {
   /* Margin bottom by footer height */
-  margin-bottom: 25px;
+  margin-bottom: 10px;
 }
 
 .navbar-brand{
 	font-size: x-large;
 	text-align: center;
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	color: #000000 !important;
 }
+
+/*rop down route{
+	
+*/
 
 .bg-inverse {
 	background-color: #ADD8E6 !important;
@@ -43,6 +50,6 @@ body > .container {
   padding-left: 15px;
 }
   #map {
-        height: 600px;
+        height: 750px;
         width: 100%;
 }
